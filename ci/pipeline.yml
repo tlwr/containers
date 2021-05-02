@@ -19,6 +19,7 @@ jobs:
     serial: true
     plan:
       - get: containers-src
+        passed: [set-pipeline]
         trigger: true
 
       - task: build-image
