@@ -1,0 +1,16 @@
+resources:
+  - name: containers-src
+    type: git
+    source:
+      uri: https://github.com/tlwr/containers.git
+      branch: main
+
+jobs:
+  - name: set-pipeline
+    serial: true
+    plan:
+      - get: containers-src
+        trigger: true
+
+      - set_pipeline: containers
+        file: containers-src/ci/pipeline.yml
