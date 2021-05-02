@@ -5,6 +5,14 @@ resources:
       uri: https://github.com/tlwr/containers.git
       branch: main
 
+  - name: rspec-podman-img
+    type: registry-image
+    icon: docker
+    source:
+      repository: ghcr.io/tlwr/rspec-podman
+      username: ((docker-secrets.username))
+      password: ((docker-secrets.password))
+
 jobs:
   - name: set-pipeline
     serial: true
@@ -47,3 +55,9 @@ jobs:
 
           params:
             CONTEXT: ./rspec-podman
+
+      - put: rspec-podman-img
+        params:
+          image: image/image.tar
+        get_params:
+          skip_download: true
