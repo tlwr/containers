@@ -7,4 +7,10 @@ RUN curl -fsSL -o podman-linux-amd64.tar.gz https://github.com/mgoltzsche/podman
       && tar -xzf podman-linux-amd64.tar.gz \
       && cp -r podman-linux-amd64/usr podman-linux-amd64/etc /
 
-WORKDIR /
+RUN mkdir /opt/rspec-podman
+WORKDIR /opt/rspec-podman
+
+COPY $PWD/Gemfile .
+COPY $PWD/Gemfile.lock .
+
+RUN bundle install
