@@ -14,3 +14,32 @@ jobs:
 
       - set_pipeline: containers
         file: containers-src/ci/pipeline.yml
+
+  - name: build-ruby-podman
+    serial: true
+    plan:
+      - get: containers-src
+        trigger: true
+
+      - task: build-image
+        privileged: true
+        config:
+          platform: linux
+
+          image_resource:
+            type: registry-image
+            source:
+              repository: vito/oci-build-task
+
+          inputs:
+            - name: containers-src
+              path: .
+
+          outputs:
+            - name: image
+
+          run:
+            path: build
+
+          params:
+            CONTEXT: ./ruby-podman
