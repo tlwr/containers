@@ -15,7 +15,7 @@ jobs:
       - set_pipeline: containers
         file: containers-src/ci/pipeline.yml
 
-  - name: build-ruby-podman
+  - name: build-rspec-podman
     serial: true
     plan:
       - get: containers-src
@@ -46,4 +46,4 @@ jobs:
             - path: cache
 
           params:
-            CONTEXT: ./ruby-podman
+            CONTEXT: ./rspec-podman
