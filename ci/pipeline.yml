@@ -62,3 +62,34 @@ jobs:
           additional_tags: containers-src/.git/ref
         get_params:
           skip_download: true
+
+  - name: test-rspec-podman
+    serial: true
+    plan:
+      - get: containers-src
+        passed: [build-rspec-podman]
+
+      - get: rspec-podman-img
+        passed: [build-rspec-podman]
+        trigger: true
+        params:
+          format: oci
+
+      - task: test-image
+        image: rspec-podman-img
+        privileged: true
+        config:
+          platform: linux
+
+          inputs:
+            - name: containers-src
+
+            - name: rspec-podman-img
+
+          run:
+            dir: containers-src
+            path: rspec
+            args: [rspec-podman]
+
+          env:
+            CONTAINER_PATH: ../rspec-podman-img/image.tar
